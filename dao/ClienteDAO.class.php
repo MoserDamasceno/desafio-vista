@@ -39,8 +39,7 @@ class ClienteDAO {
 	}
 
 	public function alterarCliente ( $cliente ) {
-
-		$data  = array( 'cliente' => $cliente->cliente, 'sigla' => $cliente->sigla );
+		$data  = array('nome' => $cliente->nome, 'email' => $cliente->email, 'telefone' => $cliente->telefone);
 		$query = new Query;
 		$query->where('id = '.$cliente->id);
 

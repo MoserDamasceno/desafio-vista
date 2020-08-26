@@ -43,97 +43,6 @@ class Utils
 
 	}
 
-	static function download($documento, $delete = null)
-	{
-
-		$arquivo = UPLOAD_DIR. $documento;
-
-		if(isset($arquivo) && file_exists($arquivo)){
-			/* faz o teste se a variavel não esta vazia e se o arquivo realmente existe */
-			$tipo = strtolower(substr(strrchr(basename($arquivo),"."),1));
-			switch($tipo){
-				/*verifica a extensão do arquivo para pegar o tipo */
-				case "pdf":
-				$tipo="application/pdf";
-				break;
-				case "txt":
-				$tipo="text/plain";
-				break;
-				case "zip":
-				$tipo="application/zip";
-				break;
-				case "doc":
-				$tipo="application/msword";
-				break;
-				case "xls":
-				$tipo="application/vnd.ms-excel";
-				break;
-				case "ppt":
-				$tipo="application/vnd.ms-powerpoint";
-				break;
-				case "gif":
-				$tipo="image/gif";
-				break;
-				case "png":
-				$tipo="image/png";
-				break;
-				case "jpg":
-				$tipo="image/jpg";
-				case "jpeg":
-				$tipo="image/jpeg";
-				break;
-				case "mp3":
-				$tipo="audio/mpeg";
-				break;
-				case "php": /* deixar vazio por seurança */
-				case "htm": /* deixar vazio por seurança */
-				case "html": /* deixar vazio por seurança */
-				case "exe": /* deixar vazio por seurança */
-				break;
-
-			}
-			if($tipo == "application/zip")
-			{
-				header("Content-Type: " . $tipo);
-				header("Content-Transfer-Encoding: binary");
-				header('Pragma: public');
-				header('Expires: 0');
-				header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-				header("Cache-Control: public");
-				header("Content-Description: File Transfer");
-			}
-			else
-			{
-				header("Content-Type: ".$tipo);
-			}
-			/* informa o tamanho do arquivo ao navegador */
-			header("Content-Disposition: attachment; filename=".basename($arquivo));
-
-			/* informa o tipo do arquivo ao navegador */
-			header("Content-Length: ".filesize($arquivo));
-			/* informa ao navegador que é tipo anexo e faz abrir a janela de download, tambem informa o nome do arquivo */
-			ob_end_flush();
-			readfile($arquivo);
-			/* lê o arquivo */
-
-			if ($delete !== null) {
-				unlink(UPLOAD_DIR. $documento);
-			}
-			exit;
-			/* aborta pós-ações */
-		}
-
-
-	}
-
-	static function calculaPorcentagem($data_inicio, $data_fim)
-	{
-		$date  = new DateTime($data_inicio);
-		$date2 = new DateTime($data_fim);
-
-		Utils::pre($date->diff($date2));
-	}
-
 	static function objectToArray($object) {
 		$res_array = array();
 		foreach ($object as $obj) {
@@ -164,8 +73,6 @@ class Utils
 	}
 
 	static function removeAcentos($string, $slug = false) {
-		// $string = strtolower($string);
-
 		// Código ASCII das vogais
 		$ascii['a'] = range(224, 230);
 		$ascii['e'] = range(232, 235);

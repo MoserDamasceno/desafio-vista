@@ -54,7 +54,7 @@
 		 */
 		public function __toString(){
 
-			return $this->constructSelect(null);;
+			return $this->constructSelect(null);
 		}
 
 		/**
@@ -372,6 +372,7 @@
 					$fields .= (($cont+1) == count($data)) ? $key. ' = ?' : $key. ' = ?, ' ;
 					$cont++;
 				}
+				
 				$com = $this->conexao->prepare("UPDATE $table SET $fields {$this->where}");
 				$i = 1;
 				foreach ($data as $key => $value) {
@@ -379,8 +380,8 @@
 					$i++;
 				}
 				$com->execute();
-				$erro = $com->errorCode();
-				
+				$erro = $com->errorInfo(); 
+								
 				$this->conexao=null;
 				return $erro;
 			}
@@ -498,15 +499,15 @@
 		{
 			switch ($this->queryType) {
 				case 'select':
-				$sql =  $this->constructSelect($table);
-				$consulta= $this->conexao->query($sql);
-				if ($this->class) {
-					$produtos=$consulta->fetchAll(PDO::FETCH_CLASS,$this->class);
-				}else{
-					$produtos=$consulta->fetchAll(PDO::FETCH_OBJ);
-				}
-				
-				return $produtos;
+					$sql =  $this->constructSelect($table);
+					$consulta= $this->conexao->query($sql);
+					if ($this->class) {
+						$res=$consulta->fetchAll(PDO::FETCH_CLASS,$this->class);
+					}else{
+						$res=$consulta->fetchAll(PDO::FETCH_OBJ);
+					}
+					
+					return $res;
 
 				case 'update':
 				return $this->constructUpdate($table);
@@ -535,8 +536,8 @@
 				case 'select':
 				$sql =  $this->constructSelect($table);
 				$consulta= $this->conexao->query($sql);
-				$produtos=$consulta->fetch(PDO::FETCH_OBJ);
-				return $produtos;
+				$res=$consulta->fetch(PDO::FETCH_OBJ);
+				return $res;
 
 				case 'update':
 				return $this->constructUpdate($table);

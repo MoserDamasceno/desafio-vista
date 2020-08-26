@@ -2,7 +2,7 @@
 <div class="container-fluid">
     <!-- Page Heading -->
     <h1 class="h3 mb-2 text-gray-800">Clientes</h1>
-    <p class="mb-4">Lista de clientes</p>
+    <p class="mb-4">Editar informações do cliente.</p>
 
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
@@ -11,17 +11,17 @@
                 <input type="hidden" name="id" value="<?php echo $cliente->id; ?>">
                 <div class="form-group">
                     <label for="nome">Nome</label>
-                    <input name="nome" type="text" class="form-control" id="nome" placeholder="Insira o nome" value="<?php echo $cliente->nome; ?>">
+                    <input name="nome" type="text" class="form-control" id="nome" placeholder="Insira o nome" value="<?php echo $cliente->nome; ?>" required>
                 </div>
 
                 <div class="form-group">
                     <label for="email">E-mail</label>
-                    <input name="email" type="text" class="form-control" id="email" placeholder="Insira o e-mail" value="<?php echo $cliente->email; ?>">
+                    <input name="email" type="email" class="form-control" id="email" placeholder="Insira o e-mail" value="<?php echo $cliente->email; ?>" required>
                 </div>
 
                 <div class="form-group">
                     <label for="telefone">Telefone</label>
-                    <input name="telefone" type="text" class="form-control" id="telefone" placeholder="Insira o Telefone" value="<?php echo $cliente->telefone; ?>">
+                    <input name="telefone" type="text" class="form-control" id="telefone" placeholder="Insira o Telefone" value="<?php echo $cliente->telefone; ?>" required>
                 </div>
                 <button type="submit" class="btn btn-primary">Salvar</button>
             </form>

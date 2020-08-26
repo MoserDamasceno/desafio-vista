@@ -1,19 +1,14 @@
 <?php
 
-class Contrato
+class Mensalidade
 {
 
 	public $id;
-	public $imovel_id;
-	public $proprietario_id;
-	public $locatario_id;
-	public $inicio;
-	public $fim;
-	public $taxa_administracao;
-	public $valor_aluguel;
-	public $condominio;
-	public $iptu;
-
+	public $contrato_id;
+	public $valor;
+	public $mes;
+	public $paga;
+	
 	public function __get($atributo)
 	{
 		return $this->$atributo;
@@ -23,10 +18,17 @@ class Contrato
 		$this->$atributo = $valor;
 	}
 
+	public function calcularMensalidade($contrato)
+	{
+		$this->valor = $contrato->valor_aluguel + $contrato->condominio + $contrato->iptu;
+	}
+
 	public function calcularDataFim()
 	{
 		$fim = date('Y-m-d', strtotime("+12 months", strtotime($this->inicio)));
 		$this->fim = $fim;
 	}
+
+
 
 }

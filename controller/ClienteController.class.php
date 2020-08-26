@@ -17,18 +17,25 @@ class ClienteController
 
     static function salvar()
     {
-        $cliente = new Cliente;
-        $cliente->nome = $_POST['nome'];
-        $cliente->email = $_POST['email'];
-        $cliente->telefone = $_POST['telefone'];
+        if (!empty($_POST['nome']) &&  !empty($_POST['email']) &&  !empty($_POST['telefone'])) {
+            $cliente = new Cliente;
+            $cliente->nome = $_POST['nome'];
+            $cliente->email = $_POST['email'];
+            $cliente->telefone = $_POST['telefone'];
+        } else {
+            $mensagem = 'Erro ao criar cliente: Todos os campos são obrigatórios.<br/><br/><a href="' . BASE_URL . 'cliente/criar">Voltar</a>';
+            MensagemController::index($mensagem);
+            return;
+        }
 
         $clienteDAO = new ClienteDAO;
         $erro = $clienteDAO->cadastrarCliente($cliente);
 
         if (!is_array($erro)) {
-            Utils::redirect(BASE_URL . 'cliente/listar');
+            $mensagem = 'Cliente cadastrado com sucesso! <br/><br/><a href="' . BASE_URL . 'cliente/listar">Voltar</a>';
+            MensagemController::index($mensagem);
         } else {
-            $mensagem = 'The country  was not created, follow error was returned: ' . $erro[2] . '.<br/><br/><a href="' . BASE_URL . 'cliente/criar">Voltar</a>';
+            $mensagem = 'Cliente não cadastrado. O seguinte erro foi retornado: ' . $erro[2] . '.<br/><br/><a href="' . BASE_URL . 'cliente/criar">Voltar</a>';
             MensagemController::index($mensagem);
         }
     }
@@ -55,21 +62,28 @@ class ClienteController
 
     static function alterar()
     {
-        $cliente = new Cliente;
-        $cliente->id_cliente = $_POST['id'];
-        $cliente->nome = $_POST['nome'];
-        $cliente->email = $_POST['email'];
-        $cliente->telefone = $_POST['telefone'];
-
-        $clienteDAO = new ClienteDAO;
-        $erro = $clienteDAO->alterarCliente($cliente);
-
-        if (!$erro[1]) {
-            Utils::redirect(BASE_URL . 'cliente/listar');
+        if (!empty($_POST['nome']) &&  !empty($_POST['email']) &&  !empty($_POST['telefone'])) {
+            $cliente = new Cliente;
+            $cliente->id = $_POST['id'];
+            $cliente->nome = $_POST['nome'];
+            $cliente->email = $_POST['email'];
+            $cliente->telefone = $_POST['telefone'];
         } else {
-            $mensagem = 'The client  was not updated, follow error was returned: ' . $erro[2] . '.<br/><br/><a href="' . BASE_URL . 'cliente/listar">Voltar</a>';
+            $mensagem = 'Todos os campos são obrigatórios.<br/><br/><a href="' . BASE_URL . 'cliente/editar/'. $_POST['id'].'">Voltar</a>';
             MensagemController::index($mensagem);
+            return;
         }
+
+            $clienteDAO = new ClienteDAO;
+            $erro = $clienteDAO->alterarCliente($cliente);
+            
+            if (!$erro[1]) {
+                $mensagem = 'Cliente atualizado com sucesso! <br/><br/><a href="' . BASE_URL . 'cliente/listar">Voltar</a>';
+                MensagemController::index($mensagem);
+            } else {
+                $mensagem = 'Cliente não atualizado. O seguinte erro retornou: ' . $erro[2] . '.<br/><br/><a href="' . BASE_URL . 'cliente/editar/'.$_POST['id'].'">Voltar</a>';
+                MensagemController::index($mensagem);
+            }
 
     }
 
@@ -80,9 +94,10 @@ class ClienteController
         $erro = $clienteDAO->excluirCliente($id[0]);
 
         if (!$erro[1]) {
-            Utils::redirect(BASE_URL . 'cliente/listar');
+            $mensagem = 'Cliente excluído com sucesso!<br/><br/><a href="' . BASE_URL . 'cliente/listar">Voltar</a>';
+            MensagemController::index($mensagem);
         } else {
-            $mensagem = 'The country  was not deleted, follow error was returned: ' . $erro[2] . '.<br/><br/><a href="' . BASE_URL . 'cliente/listar">Voltar</a>';
+            $mensagem = 'O cliente não pode ser excluído. O seguinte erro retornou: ' . $erro[2] . '.<br/><br/><a href="' . BASE_URL . 'cliente/listar">Voltar</a>';
             MensagemController::index($mensagem);
         }
     }

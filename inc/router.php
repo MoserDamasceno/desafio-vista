@@ -35,21 +35,12 @@
 		}
 
 		if ( is_callable( $classe.'::'.$funcao ) ) {
-
-			if ( LoginController::verificarPermissao($classe, $funcao) ) {
-
 				$conf = array($classe,$funcao);
-
 				if ( count($param)<= 0 ) {
 					$param = null;
 				}
-
 				call_user_func($conf, $param);
 
-			} else {
-				MensagemController::index('Você não tem permissão para acessar esta página <br/><br/><a href="'.BASE_URL.'"> Voltar</a>.', 'Erro');
-				die;
-			}
 
 		} else {
 			MensagemController::index('Página não encontrada.', 'Erro 404');
@@ -64,5 +55,3 @@
 
 		DashboardController::index();
 	}
-	
-?>
